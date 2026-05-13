@@ -4,12 +4,12 @@ const crearCliente = (req, res) => {
   if (!req.body || Object.keys(req.body).length === 0) {
     return res.status(400).json({ error: 'El body no puede estar vacío' });
   }
-  const { nombre, apellido, email, telefono, fecha_registro, activo } = req.body;
-  if (!nombre || !apellido || !email) {
-    return res.status(400).json({ error: 'nombre, apellido y email son obligatorios' });
+  const { nombre, apellido, email, telefono, fecha_registro, activo, pais_residencia } = req.body;
+  if (!nombre || !apellido || !email || !pais_residencia) {
+    return res.status(400).json({ error: 'nombre, apellido, email y pais_residencia son obligatorios' });
   }
-  const sql = 'INSERT INTO clientes_web (nombre, apellido, email, telefono, fecha_registro, activo) VALUES (?, ?, ?, ?, ?, ?)';
-  db.query(sql, [nombre, apellido, email, telefono, fecha_registro, activo ?? true], (err, result) => {
+  const sql = 'INSERT INTO clientes_web (nombre, apellido, email, telefono, fecha_registro, activo, pais_residencia) VALUES (?, ?, ?, ?, ?, ?, ?)';
+  db.query(sql, [nombre, apellido, email, telefono, fecha_registro, activo ?? true, pais_residencia], (err, result) => {
     if (err) return res.status(500).json({ error: err.message });
     res.status(201).json({ message: 'Cliente creado', id: result.insertId });
   });
@@ -36,12 +36,12 @@ const actualizarCliente = (req, res) => {
   if (!req.body || Object.keys(req.body).length === 0) {
     return res.status(400).json({ error: 'El body no puede estar vacío' });
   }
-  const { nombre, apellido, email, telefono, fecha_registro, activo } = req.body;
-  if (!nombre || !apellido || !email) {
-    return res.status(400).json({ error: 'nombre, apellido y email son obligatorios' });
+  const { nombre, apellido, email, telefono, fecha_registro, activo, pais_residencia } = req.body;
+  if (!nombre || !apellido || !email || !pais_residencia) {
+    return res.status(400).json({ error: 'nombre, apellido, email y pais_residencia son obligatorios' });
   }
-  const sql = 'UPDATE clientes_web SET nombre=?, apellido=?, email=?, telefono=?, fecha_registro=?, activo=? WHERE id=?';
-  db.query(sql, [nombre, apellido, email, telefono, fecha_registro, activo, id], (err, result) => {
+  const sql = 'UPDATE clientes_web SET nombre=?, apellido=?, email=?, telefono=?, fecha_registro=?, activo=?, pais_residencia=? WHERE id=?';
+  db.query(sql, [nombre, apellido, email, telefono, fecha_registro, activo, pais_residencia, id], (err, result) => {
     if (err) return res.status(500).json({ error: err.message });
     if (result.affectedRows === 0) return res.status(404).json({ error: 'Cliente no encontrado' });
     res.json({ message: 'Cliente actualizado' });
